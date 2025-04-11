@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package nation;
+
+service NationService {
+  rpc CreateNation(CreateNationRequest) returns (NationResponse);
+  rpc GetNation(NationRequest) returns (NationResponse);
+}
+
+message CreateNationRequest {
+  string name = 1;
+  int32 population = 2;
+  int32 land_size = 3;
+  int32 gold = 4;
+}
+
+message NationRequest {
+  string id = 1;
+}
+
+message NationResponse {
+  string id = 1;
+  string name = 2;
+  int32 population = 3;
+  int32 land_size = 4;
+  int32 gold = 5;
+}
