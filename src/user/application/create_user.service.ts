@@ -6,18 +6,6 @@ import { CreateUserDto } from '../dto/create_user.dto';
 export class CreateUserService {
   constructor(private readonly userRepo: UserRepository) {}
 
-  async execute(dto: CreateUserDto): Promise<User> {
-    if (!dto.email) {
-      throw new Error('User not found');
-    }
-
-    if (!dto.password) {
-      throw new Error('not found email');
-    }
-
-    if (!dto.profileName) {
-      throw new Error('not found profile name');
-    }
 
     const existing = await this.userRepo.findByEmail(dto.email);
     if (existing) {

@@ -2,13 +2,9 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { join } from 'path';
-import {
-  DB_URL,
-  HOST,
-  NATION_PROTO_PATH,
-  PORT,
-  USER_PROTO_PATH,
-} from './common';
+import { HOST, NATION_PROTO_PATH, PORT, USER_PROTO_PATH } from './common';
+import { ValidationExceptionFilter } from 'common/filter/validation_exception.filter';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
@@ -25,8 +21,14 @@ async function bootstrap() {
       },
     },
   );
-
-  // const app = await NestFactory.create(AppModule);
+  app.useGlobalFilters(new ValidationExceptionFilter());
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      transform: true,
+    }),
+  );
   await app.listen();
 }
 bootstrap();
