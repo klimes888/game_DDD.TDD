@@ -2,7 +2,13 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { join } from 'path';
-import { HOST, NATION_PROTO_PATH, PORT, USER_PROTO_PATH } from './common';
+import {
+  DB_URL,
+  HOST,
+  NATION_PROTO_PATH,
+  PORT,
+  USER_PROTO_PATH,
+} from './common';
 
 async function bootstrap() {
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
