@@ -4,14 +4,15 @@
     {
       "type": "pwa-node",
       "request": "launch",
-      "name": "Debug NestJS gRPC",
-      "runtimeArgs": ["--require", "ts-node/register"],
-      "args": ["src/main.ts"],
+      "name": "Debug NestJS gRPC with Reload",
+      "runtimeExecutable": "nodemon",
+      "program": "${workspaceFolder}/src/main.ts",
+      "restart": true,
+      "args": [],
       "cwd": "${workspaceFolder}",
-      "skipFiles": ["<node_internals>/**"],
       "envFile": "${workspaceFolder}/.env",
       "console": "integratedTerminal",
-      "autoAttachChildProcesses": true
+      "internalConsoleOptions": "neverOpen"
     }
   ]
 }
