@@ -4,7 +4,7 @@ package user;
 
 service UserService {
   rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);
-  rpc GetUser(GetUserRequest) returns (UserResponse);
+  rpc GetUser(GetUserRequest) returns (GetUserResponse);
 }
 
 message CreateUserRequest {
@@ -24,6 +24,12 @@ message UserResponse {
 }
 
 message CreateUserResponse {
+  int32 code = 1;
+  string message = 2;
+  UserResponse user = 3;
+}
+
+message GetUserResponse {
   int32 code = 1;
   string message = 2;
   UserResponse user = 3;
