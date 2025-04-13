@@ -1,7 +1,7 @@
 import { User } from '../domain/entities/user.entity';
 import { Profile } from '../domain/entities/profile.entity';
 import { UserRepository } from '../domain/interfaces/user_repository.interface';
-import { CreateUserDto } from '../dto/create_user.dto';
+import { CreateUserDto } from '../dto/user.dto';
 import { RpcException } from '@nestjs/microservices';
 import { status } from '@grpc/grpc-js';
 export class CreateUserService {

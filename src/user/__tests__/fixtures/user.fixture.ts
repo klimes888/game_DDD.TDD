@@ -8,6 +8,11 @@ export const correct_user_data = {
   profileName: faker.person.fullName(),
 };
 
+export const found_user_data = {
+  ...correct_user_data,
+  id: 1,
+};
+
 export const wrong_user_datas = [
   {
     email: '',
@@ -34,3 +39,5 @@ export const wrong_user_datas = [
     reason: 'empty profile name',
   },
 ];
+
+export const wrong_user_ids = ['1', '', 'a', 0.1, null, undefined];

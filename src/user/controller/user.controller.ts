@@ -1,6 +1,6 @@
 import { GrpcMethod } from '@nestjs/microservices';
 import { Body, Controller, UsePipes, ValidationPipe } from '@nestjs/common';
-import { CreateUserDto } from '../dto/create_user.dto';
+import { CreateUserDto } from '../dto/user.dto';
 import { CreateUserService } from '../application/create_user.service';
 
 @Controller()
