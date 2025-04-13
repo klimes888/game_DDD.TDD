@@ -10,6 +10,7 @@ import { GetUserService } from '../application/get_user.service';
 import { userMockRepo } from './mocks/user_repo.mock';
 import { plainToInstance } from 'class-transformer';
 import { validate } from 'class-validator';
+import { RpcException } from '@nestjs/microservices';
 
 /** 유저 생성 */
 describe('Create user test', () => {
@@ -52,6 +53,7 @@ describe('Find user info test', () => {
     service = new GetUserService(userMockRepo); //
   });
 
+  // success found user
   it('Success find user info', async () => {
     userMockRepo.findById.mockResolvedValue(found_user_data);
 
@@ -63,7 +65,18 @@ describe('Find user info test', () => {
     expect(errors.length).toBe(0);
   });
 
-  it.each(wrong_user_ids)('wrong find user by id', async (id) => {
+  // Not found user
+  it('Not found user info', async () => {
+    // 유저가 존재하지 않음
+    userMockRepo.findById.mockResolvedValue(null);
+
+    const dto = plainToInstance(GetUserDto, { id: 999 });
+    // gRPC 에러 return
+    await expect(service.execute(dto)).rejects.toThrow(RpcException);
+  });
+
+  // each fail usecase
+  it.each(wrong_user_ids)('wrong find user by id: $reason', async (id) => {
     userMockRepo.findById.mockResolvedValue(null);
 
     const dto = plainToInstance(GetUserDto, { id });
