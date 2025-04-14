@@ -3,6 +3,7 @@ import {
   correct_user_data,
   found_user_data,
   modify_user_data,
+  wrong_modify_user_data,
   wrong_user_datas,
   wrong_user_ids,
 } from './fixtures/user.fixture';
@@ -103,11 +104,32 @@ describe('Modifing user info', () => {
     // dto valid 검증
     const dto = plainToInstance(ModifyUserDto, modify_user_data);
     const errors = await validate(dto);
-    expect(errors.length).toBeGreaterThan(0);
 
+    expect(errors.length).toBe(0);
+
+    // 저장 로직 검증
     const user = await service.modify(dto);
-
     expect(user).toEqual(modify_user_data);
-    // 데이터
   });
+
+  // Not found user
+  it('Not found user info for modify', async () => {
+    // 유저가 존재하지 않음
+    userMockRepo.findById.mockResolvedValue(null);
+
+    const dto = plainToInstance(GetUserDto, { id: 999 });
+    // gRPC 에러 return
+    await expect(service.modify(dto)).rejects.toThrow(RpcException);
+  });
+
+  it.each(wrong_modify_user_data)(
+    'Insert wrong user data fail: $reason',
+    async (data) => {
+      userMockRepo.findById.mockResolvedValue(found_user_data);
+
+      const dto = plainToInstance(ModifyUserDto, data);
+      const errors = await validate(dto);
+      expect(errors.length).toBeGreaterThan(0);
+    },
+  );
 });

@@ -1,5 +1,14 @@
-import { IsEmail, IsInt, IsNotEmpty, Min, MinLength } from 'class-validator';
+import {
+  IsEmail,
+  IsInt,
+  IsNotEmpty,
+  IsOptional,
+  MaxLength,
+  Min,
+  MinLength,
+} from 'class-validator';
 
+// 중복 제거
 export class GetUserDto {
   @IsNotEmpty({ message: 'user id는 필수입니다.' })
   @IsInt({ message: 'user id는 정수여야 합니다.' })
@@ -12,12 +21,12 @@ export class ModifyUserDto {
   @Min(1, { message: 'user id는 1 이상이어야 합니다.' })
   id: number;
 
-  @IsNotEmpty({ message: '비밀번호는 필수입니다.' })
   @MinLength(6, { message: '비밀번호는 최소 6자리 이상이어야 합니다.' })
-  password: string;
+  password?: string;
 
-  @IsNotEmpty({ message: '프로필 이름은 필수입니다.' })
-  profileName: string;
+  @MinLength(2, { message: '닉네임은 최소 2자리 이상이어야 합니다' })
+  @MaxLength(20, { message: '닉네임은 최대 20자 이하이어야 합니다' })
+  profileName?: string;
 }
 
 export class CreateUserDto {
@@ -25,9 +34,11 @@ export class CreateUserDto {
   email: string;
 
   @IsNotEmpty({ message: '비밀번호는 필수입니다.' })
-  @MinLength(6, { message: '비밀번호는 최소 6자리 이상이어야 합니다.' })
+  @MinLength(2, { message: '비밀번호는 최소 6자리 이상이어야 합니다.' })
   password: string;
 
   @IsNotEmpty({ message: '프로필 이름은 필수입니다.' })
+  @MinLength(2, { message: '닉네임은 최소 2자리 이상이어야 합니다' })
+  @MaxLength(20, { message: '닉네임은 최대 20자 이하이어야 합니다' })
   profileName: string;
 }

@@ -43,6 +43,20 @@ export const wrong_user_datas = [
 export const wrong_user_ids = ['1', '', 'a', 0.1, null, undefined];
 
 export const modify_user_data = {
+  id: 1,
   profileName: faker.person.lastName(),
   password: faker.internet.password(),
 };
+
+export const wrong_modify_user_data = [
+  {
+    id: null,
+    profileName: faker.person.lastName(),
+    password: faker.internet.password(),
+  },
+  {
+    id: 1,
+    profileName: '너무긴닉네임너무긴닉네임너무긴닉네임너무긴닉네임',
+    password: faker.internet.password(),
+  },
+];
