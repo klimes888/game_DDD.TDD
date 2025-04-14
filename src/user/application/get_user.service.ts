@@ -3,9 +3,13 @@ import { UserRepository } from '../domain/interfaces/user_repository.interface';
 import { GetUserDto } from '../dto/user.dto';
 import { RpcException } from '@nestjs/microservices';
 import { status } from '@grpc/grpc-js';
+import { Inject } from '@nestjs/common';
 
 export class GetUserService {
-  constructor(private readonly userRepo: UserRepository) {}
+  constructor(
+    @Inject('UserRepository')
+    private readonly userRepo: UserRepository,
+  ) {}
 
   async execute(dto: GetUserDto): Promise<User> {
     const user = await this.userRepo.findById(dto.id);

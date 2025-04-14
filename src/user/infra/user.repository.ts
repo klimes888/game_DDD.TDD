@@ -25,12 +25,31 @@ export class UserRepositoryImpl implements UserRepository {
   }
 
   async findById(id: number): Promise<User | null> {
-    const rawUser = await this.userRepo.query(
-      'SELECT * FROM user WHERE id = ?',
-      [id],
-    );
+    const userInfo = await this.dataSource.transaction(async (manager) => {
+      const rows = await manager.query(
+        `SELECT u.id AS userId, u.email, u.createdAt, 
+                p.id AS profileId, p.name AS profileName
+         FROM user u
+         JOIN profile p ON u.profileId = p.id
+         WHERE u.id = ?`,
+        [id],
+      );
 
-    return Object.assign(new User(), rawUser[0]); // plain text를 obj로 매핑
+      const row = rows[0];
+
+      return {
+        id: row.userId,
+        email: row.email,
+        password: row.password,
+        createdAt: row.createdAt,
+        profile: {
+          id: row.profileId,
+          name: row.profileName,
+        },
+      };
+    });
+
+    return userInfo;
   }
 
   /** 유저 저장 */
