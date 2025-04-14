@@ -80,4 +80,8 @@ export class UserRepositoryImpl implements UserRepository {
 
     return Object.assign(new User(), result);
   }
+
+  async modify(dto: User) {
+    return new User();
+  }
 }

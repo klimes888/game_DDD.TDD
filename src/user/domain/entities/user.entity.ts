@@ -42,4 +42,15 @@ export class User {
 
     return user;
   }
+
+  static modify(password: string, profileName: string): User {
+    const profile = new Profile();
+    profile.name = profileName;
+
+    const user = new User();
+    user.password = password;
+    user.profile = profile;
+
+    return user;
+  }
 }

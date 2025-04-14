@@ -4,4 +4,5 @@ export const userMockRepo = {
   findByEmail: jest.fn(),
   findById: jest.fn(),
   save: jest.fn(),
+  modify: jest.fn(),
 };

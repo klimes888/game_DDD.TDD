@@ -5,7 +5,7 @@ export const user_email = faker.internet.email();
 export const correct_user_data = {
   email: user_email,
   password: faker.internet.password(),
-  profileName: faker.person.fullName(),
+  profileName: faker.person.lastName(),
 };
 
 export const found_user_data = {
@@ -16,13 +16,13 @@ export const found_user_data = {
 export const wrong_user_datas = [
   {
     email: '',
-    password: 'pass123',
+    password: faker.internet.password(),
     profileName: 'John',
     reason: 'empty email',
   },
   {
     email: 'invalid-email',
-    password: 'pass123',
+    password: faker.internet.password(),
     profileName: 'Jane',
     reason: 'invalid email format',
   },
@@ -41,3 +41,8 @@ export const wrong_user_datas = [
 ];
 
 export const wrong_user_ids = ['1', '', 'a', 0.1, null, undefined];
+
+export const modify_user_data = {
+  profileName: faker.person.lastName(),
+  password: faker.internet.password(),
+};

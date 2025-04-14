@@ -10,7 +10,7 @@ export class CreateUserService {
     private readonly userRepo: UserRepository,
   ) {}
 
-  async execute(dto: CreateUserDto): Promise<User> {
+  async create(dto: CreateUserDto): Promise<User> {
     const existing = await this.userRepo.findByEmail(dto.email);
     if (existing) {
       throw new RpcException({

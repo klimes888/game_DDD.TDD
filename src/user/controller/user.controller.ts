@@ -13,13 +13,15 @@ export class UserController {
 
   @GrpcMethod('UserService', 'GetUser')
   async getUser(@Body() data: GetUserDto) {
-    const user = await this.getUserService.execute(data);
+    const user = await this.getUserService.get(data);
     return { data: user, code: 2, message: 'Success Find User!' };
   }
 
   @GrpcMethod('UserService', 'CreateUser')
   async create(@Body() data: CreateUserDto) {
-    const result = await this.createUserService.execute(data);
+    const result = await this.createUserService.create(data);
     return { data: result, code: 1, message: 'Success Create User!' };
   }
+
+  // @GrpcMethod('')
 }

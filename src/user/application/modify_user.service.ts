@@ -1,17 +1,17 @@
-import { User } from 'user/domain/entities/user.entity';
+import { User } from '../../user/domain/entities/user.entity';
 import { UserRepository } from '../domain/interfaces/user_repository.interface';
-import { GetUserDto } from '../dto/user.dto';
 import { RpcException } from '@nestjs/microservices';
 import { status } from '@grpc/grpc-js';
 import { Inject } from '@nestjs/common';
+import { ModifyUserDto } from 'user/dto/user.dto';
 
-export class GetUserService {
+export class ModifyUserService {
   constructor(
     @Inject('UserRepository')
     private readonly userRepo: UserRepository,
   ) {}
 
-  async get(dto: GetUserDto): Promise<User> {
+  async modify(dto: ModifyUserDto): Promise<User> {
     const user = await this.userRepo.findById(dto.id);
 
     if (!user) {
@@ -20,7 +20,11 @@ export class GetUserService {
         code: status.NOT_FOUND,
       });
     }
+    // factory
+    const data = User.modify(dto.password, dto.profileName);
 
-    return user;
+    const modifiedUser = await this.userRepo.modify(data);
+
+    return modifiedUser;
   }
 }
