@@ -10,5 +10,6 @@ export const DB_URL = `mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@${DB_HOST}:${DB_P
 
 // DATABASE_URL=postgresql://lunar:1111@postgres/world
 /** PATH */
+export const COMMON_PROTO_PATH = './src/proto/common.proto';
 export const USER_PROTO_PATH = './src/proto/user.proto';
 export const NATION_PROTO_PATH = './src/proto/nation.proto';

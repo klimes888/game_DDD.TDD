@@ -1,0 +1,16 @@
+version: v1
+lint:
+  use:
+    - DEFAULT
+  except:
+    - ENUM_VALUE_PREFIX
+    - FIELD_LOWER_SNAKE_CASE
+  ignore:
+    - google
+  rpc_allow_same_request_response: true
+  rules:
+    no_default: true
+
+    add:
+      - MESSAGE_NAMES_UPPER_CAMEL_CASE
+      - SERVICE_NAMES_UPPER_CAMEL_CASE
