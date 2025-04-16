@@ -82,6 +82,13 @@ export class UserRepositoryImpl implements UserRepository {
   }
 
   async modify(dto: User) {
-    return new User();
+    await this.dataSource.transaction(async (manager) => {
+      await manager.query(
+        `UPDATE profile SET name = ? WHERE id = (
+          SELECT profileId FROM user WHERE id = ?
+        )`,
+        [dto.profile.name, dto.id],
+      );
+    });
   }
 }

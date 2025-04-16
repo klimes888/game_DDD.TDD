@@ -8,6 +8,7 @@ import {
   Index,
 } from 'typeorm';
 import { Profile } from './profile.entity';
+import { ModifyUserDto } from 'user/dto/user.dto';
 
 @Entity()
 export class User {
@@ -43,12 +44,14 @@ export class User {
     return user;
   }
 
-  static modify(password: string, profileName: string): User {
+  static modify(dto: ModifyUserDto): User {
     const profile = new Profile();
-    profile.name = profileName;
+
+    profile.name = dto.profileName;
 
     const user = new User();
-    user.password = password;
+    user.id = dto.id;
+    user.password = dto.password;
     user.profile = profile;
 
     return user;

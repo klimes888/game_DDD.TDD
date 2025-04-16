@@ -7,7 +7,7 @@ package user;
 service UserService {
   rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);
   rpc GetUser(GetUserRequest) returns (GetUserResponse);
-  rpc ModifyUser(ModifyUserRequest) returns (ModifyUserResponse);
+  rpc ModifyUser(ModifyUserRequest) returns (CodeMsgResponse);
   rpc LoginUser(LoginUserRequest) returns (CodeMsgResponse);
 }
 
@@ -58,11 +58,8 @@ message GetUserResponse {
 }
 
 message ModifyUserRequest {
-  string password = 1;
-  string profileName = 2;
-}
-message ModifyUserResponse {
-  string code = 1;
-  string message = 2;
-  UserResponse data = 3;
+  int32 id = 1;
+  string email = 2;
+  string password = 3;
+  string profileName = 4;
 }

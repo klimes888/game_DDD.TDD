@@ -7,6 +7,7 @@ import { GetUserService } from './application/get_user.service';
 import { UserRepositoryImpl } from './infra/user.repository';
 import { Profile } from './domain/entities/profile.entity';
 import { AuthUserService } from './application/auth_user.service';
+import { ModifyUserService } from './application';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User, Profile])],
@@ -15,6 +16,7 @@ import { AuthUserService } from './application/auth_user.service';
     CreateUserService,
     GetUserService,
     AuthUserService,
+    ModifyUserService,
     UserRepositoryImpl,
     {
       provide: 'UserRepository',

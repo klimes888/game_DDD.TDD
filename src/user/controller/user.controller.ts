@@ -1,10 +1,11 @@
 import { GrpcMethod } from '@nestjs/microservices';
 import { Body, Controller } from '@nestjs/common';
-import { CreateUserDto, GetUserDto } from '../dto/user.dto';
+import { CreateUserDto, GetUserDto, ModifyUserDto } from '../dto/user.dto';
 import { CreateUserService } from '../application/create_user.service';
 import { GetUserService } from 'user/application/get_user.service';
 import { UserLoginDto } from 'user/dto/auth.dto';
 import { AuthUserService } from 'user/application/auth_user.service';
+import { ModifyUserService } from 'user/application';
 
 @Controller()
 export class UserController {
@@ -12,6 +13,7 @@ export class UserController {
     private readonly createUserService: CreateUserService,
     private readonly getUserService: GetUserService,
     private readonly authUserService: AuthUserService,
+    private readonly modifyUserService: ModifyUserService,
   ) {}
 
   // 유저 찾기
@@ -31,7 +33,14 @@ export class UserController {
   // 유저 로그인
   @GrpcMethod('UserService', 'LoginUser')
   async login(@Body() data: UserLoginDto) {
-    const result = await this.authUserService.login(data);
-    return { data: result, code: 3, message: 'Success Login User!' };
+    await this.authUserService.login(data);
+    return { code: 3, message: 'Success Login User!' };
+  }
+
+  // 유저 프로필 수정
+  @GrpcMethod('UserService', 'ModifyUser')
+  async modify(@Body() data: ModifyUserDto) {
+    await this.modifyUserService.modify(data);
+    return { code: 4, message: 'Success modify user info!' };
   }
 }

@@ -21,7 +21,7 @@ export class ModifyUserService {
       });
     }
     // factory
-    const data = User.modify(dto.password, dto.profileName);
+    const data = User.modify(dto);
 
     await this.userRepo.modify(data);
   }
