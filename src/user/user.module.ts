@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { GetUserService } from './application/get_user.service';
 import { UserRepositoryImpl } from './infra/user.repository';
 import { Profile } from './domain/entities/profile.entity';
+import { AuthUserService } from './application/auth_user.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User, Profile])],
@@ -13,6 +14,7 @@ import { Profile } from './domain/entities/profile.entity';
   providers: [
     CreateUserService,
     GetUserService,
+    AuthUserService,
     UserRepositoryImpl,
     {
       provide: 'UserRepository',

@@ -8,6 +8,7 @@ service UserService {
   rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);
   rpc GetUser(GetUserRequest) returns (GetUserResponse);
   rpc ModifyUser(ModifyUserRequest) returns (ModifyUserResponse);
+  rpc LoginUser(LoginUserRequest) returns (CodeMsgResponse);
 }
 
 message CreateUserRequest {
@@ -20,12 +21,22 @@ message GetUserRequest {
   int32 id = 1;
 }
 
+message LoginUserRequest {
+  string email = 1;
+  string password = 2;
+}
+
 message UserResponse {
   int32 id = 1;
   string email = 2;
   string profileName = 3;
   string createdAt = 4;
   ProfileResponse profile = 5;
+}
+
+message CodeMsgResponse {
+  string code = 1;
+  string message = 2;
 }
 
 message ProfileResponse {
