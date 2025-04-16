@@ -44,6 +44,7 @@ export const wrong_user_ids = ['1', '', 'a', 0.1, null, undefined];
 
 export const modify_user_data = {
   id: 1,
+  email: faker.internet.email(),
   profileName: faker.person.lastName(),
   password: faker.internet.password(),
 };
@@ -51,12 +52,30 @@ export const modify_user_data = {
 export const wrong_modify_user_data = [
   {
     id: null,
+    email: faker.internet.email(),
     profileName: faker.person.lastName(),
     password: faker.internet.password(),
+    reason: 'id is null',
   },
   {
     id: 1,
+    email: faker.internet.email(),
     profileName: '너무긴닉네임너무긴닉네임너무긴닉네임너무긴닉네임',
     password: faker.internet.password(),
+    reason: 'nickname is too long',
+  },
+  {
+    id: 1,
+    email: faker.internet.email(),
+    profileName: '짧',
+    password: faker.internet.password(),
+    reason: 'nickname is too short',
+  },
+  {
+    id: 1,
+    email: '',
+    profileName: 'testtest', // 6자리
+    password: faker.internet.password(),
+    reason: 'email is null',
   },
 ];

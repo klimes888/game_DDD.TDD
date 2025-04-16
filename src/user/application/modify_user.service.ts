@@ -11,7 +11,7 @@ export class ModifyUserService {
     private readonly userRepo: UserRepository,
   ) {}
 
-  async modify(dto: ModifyUserDto): Promise<User> {
+  async modify(dto: ModifyUserDto): Promise<void> {
     const user = await this.userRepo.findById(dto.id);
 
     if (!user) {
@@ -23,8 +23,6 @@ export class ModifyUserService {
     // factory
     const data = User.modify(dto.password, dto.profileName);
 
-    const modifiedUser = await this.userRepo.modify(data);
-
-    return modifiedUser;
+    await this.userRepo.modify(data);
   }
 }

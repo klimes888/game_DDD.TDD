@@ -18,9 +18,10 @@ describe('Modifing user info', () => {
     service = new ModifyUserService(userMockRepo);
   });
 
+  // 유저 정보 수정 성공 케이스
   it('Success modifing user data', async () => {
     userMockRepo.findById.mockResolvedValue(found_user_data);
-    userMockRepo.modify.mockResolvedValue(modify_user_data);
+    userMockRepo.modify.mockResolvedValue(undefined);
 
     // dto valid 검증
     const { errors, dto } = await validateDto(ModifyUserDto, modify_user_data);
@@ -28,11 +29,11 @@ describe('Modifing user info', () => {
     expect(errors.length).toBe(0);
 
     // 저장 로직 검증
-    const user = await service.modify(dto);
-    expect(user).toEqual(modify_user_data);
+    await service.modify(dto);
+    expect(userMockRepo.modify).toHaveBeenCalled();
   });
 
-  // Not found user
+  // 유저 정보 찾기 실패 케이스
   it('Not found user info for modify', async () => {
     // 유저가 존재하지 않음
     userMockRepo.findById.mockResolvedValue(null);
