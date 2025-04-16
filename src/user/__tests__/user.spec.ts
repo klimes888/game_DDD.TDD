@@ -13,9 +13,9 @@ import {
   ModifyUserService,
 } from '../application';
 import { userMockRepo } from './mocks/user_repo.mock';
-import { plainToInstance } from 'class-transformer';
-import { validate } from 'class-validator';
+
 import { RpcException } from '@nestjs/microservices';
+import { validateDto } from './helpers/validate-dto.helper';
 
 /** 유저 생성 */
 describe('Create user test', () => {
@@ -30,11 +30,8 @@ describe('Create user test', () => {
     userMockRepo.save.mockResolvedValue(undefined);
 
     // DTO data 변환
-    const dto = plainToInstance(CreateUserDto, correct_user_data);
+    const { errors, dto } = await validateDto(CreateUserDto, correct_user_data);
     await service.create(dto);
-
-    // error 검증
-    const errors = await validate(dto);
 
     expect(errors.length).toBe(0);
     expect(userMockRepo.save).toHaveBeenCalled();
@@ -44,8 +41,7 @@ describe('Create user test', () => {
   it.each(wrong_user_datas)('should invalid value: $reason', async (val) => {
     userMockRepo.findByEmail.mockResolvedValue(null);
 
-    const dto = plainToInstance(CreateUserDto, val);
-    const errors = await validate(dto);
+    const { errors } = await validateDto(CreateUserDto, val);
     expect(errors.length).toBeGreaterThan(0);
   });
 });
@@ -62,8 +58,7 @@ describe('Find user info test', () => {
   it('Success find user info', async () => {
     userMockRepo.findById.mockResolvedValue(found_user_data);
 
-    const dto = plainToInstance(GetUserDto, { id: 1 });
-    const errors = await validate(dto);
+    const { errors, dto } = await validateDto(GetUserDto, { id: 1 });
     const user = await service.get(dto);
 
     expect(user).toEqual(found_user_data);
@@ -75,7 +70,7 @@ describe('Find user info test', () => {
     // 유저가 존재하지 않음
     userMockRepo.findById.mockResolvedValue(null);
 
-    const dto = plainToInstance(GetUserDto, { id: 999 });
+    const { dto } = await validateDto(GetUserDto, { id: 999 });
     // gRPC 에러 return
     await expect(service.get(dto)).rejects.toThrow(RpcException);
   });
@@ -84,8 +79,8 @@ describe('Find user info test', () => {
   it.each(wrong_user_ids)('wrong find user by id: $reason', async (id) => {
     userMockRepo.findById.mockResolvedValue(null);
 
-    const dto = plainToInstance(GetUserDto, { id });
-    const errors = await validate(dto);
+    const { errors } = await validateDto(GetUserDto, { id });
+
     expect(errors.length).toBeGreaterThan(0);
   });
 });
@@ -101,9 +96,9 @@ describe('Modifing user info', () => {
   it('Success modifing user data', async () => {
     userMockRepo.findById.mockResolvedValue(found_user_data);
     userMockRepo.modify.mockResolvedValue(modify_user_data);
+
     // dto valid 검증
-    const dto = plainToInstance(ModifyUserDto, modify_user_data);
-    const errors = await validate(dto);
+    const { errors, dto } = await validateDto(ModifyUserDto, modify_user_data);
 
     expect(errors.length).toBe(0);
 
@@ -117,7 +112,8 @@ describe('Modifing user info', () => {
     // 유저가 존재하지 않음
     userMockRepo.findById.mockResolvedValue(null);
 
-    const dto = plainToInstance(GetUserDto, { id: 999 });
+    const { dto } = await validateDto(GetUserDto, { id: 999 });
+
     // gRPC 에러 return
     await expect(service.modify(dto)).rejects.toThrow(RpcException);
   });
@@ -127,8 +123,7 @@ describe('Modifing user info', () => {
     async (data) => {
       userMockRepo.findById.mockResolvedValue(found_user_data);
 
-      const dto = plainToInstance(ModifyUserDto, data);
-      const errors = await validate(dto);
+      const { errors } = await validateDto(ModifyUserDto, data);
       expect(errors.length).toBeGreaterThan(0);
     },
   );
